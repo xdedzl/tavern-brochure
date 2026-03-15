@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最后一桶 | 3D 开放世界 · 种田 · 酒馆故事</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="fade-in">最后一桶</h1>
+            <p class="subtitle fade-in">3D 开放小世界 · 种田 · 酒馆故事</p>
+            <div class="hero-tags fade-in">
+                <span># 治愈系</span>
+                <span># 低多边形</span>
+                <span># 经营冒险</span>
+            </div>
+            <a href="#about" class="scroll-indicator fade-in">
+                <span>探索这个世界</span>
+                <div class="arrow"></div>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section id="about" class="section glass">
+            <div class="container">
+                <h2 class="section-title">把世界的故事，调成一杯温热的酒</h2>
+                <div class="grid">
+                    <div class="text-content">
+                        <p>在悬崖与海风之间，有一家重新亮起灯的老店。</p>
+                        <p>这里不仅是你的大本营，更是整个世界的<strong>温柔中枢</strong>。外面的故事、人物与传闻，最终都会在这里沉淀成菜谱、客人和传说。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section features">
+            <div class="container">
+                <div class="feature-grid">
+                    <div class="feature-card glass hover-effect">
+                        <div class="icon">🍻</div>
+                        <h3>酒馆经营</h3>
+                        <p>读人不读表。看客人的情绪，听他们的暗示，用恰到好处的风味打开他们的心扉。</p>
+                    </div>
+                    <div class="feature-card glass hover-effect">
+                        <div class="icon">🌾</div>
+                        <h3>田地与采集</h3>
+                        <p>从海岸平原到繁茂林地，亲手种下原料。每一杯酒里都藏着季节的色泽。</p>
+                    </div>
+                    <div class="feature-card glass hover-effect">
+                        <div class="icon">🐑</div>
+                        <h3>动物伙伴</h3>
+                        <p>山地绒羊、微光雾尾鸡。在炉火边看它们打滚，是漫长冒险后最好的慰藉。</p>
+                    </div>
+                    <div class="feature-card glass hover-effect">
+                        <div class="icon">🧭</div>
+                        <h3>轻量冒险</h3>
+                        <p>沿着灯塔的光芒，在废弃电台与遗迹前哨中寻找失落的传闻与旧日书信。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section showcase glass">
+            <div class="container">
+                <h2 class="section-title">艺术与氛围</h2>
+                <p class="center-text">低多边形的极简美感，配以极致的灯光意境。</p>
+                <div class="image-showcase">
+                    <div class="showcase-item hero-showcase">
+                        <img src="hero.webp" alt="游戏大厅设计">
+                        <span class="caption">「悬崖边的长椅上，脚下是万丈星河。」</span>
+                    </div>
+                    <div class="gallery">
+                        <div class="gallery-item glass">
+                            <img src="img1.webp" alt="酒馆内景">
+                            <p>温暖的壁炉与休憩的绒羊</p>
+                        </div>
+                        <div class="gallery-item glass">
+                            <img src="img2.webp" alt="吧台细节">
+                            <p>醇厚的木质吧台与古老录音机</p>
+                        </div>
+                        <div class="gallery-item glass">
+                            <img src="img3.webp" alt="星空露台">
+                            <p>看夜空中的宇宙生物缓缓游过</p>
+                        </div>
+                        <div class="gallery-item glass">
+                            <img src="img4.webp" alt="海边酒馆全景">
+                            <p>浩瀚星云下的海边酒馆，巨大的幽灵鲸鱼划过夜空</p>
+                        </div>
+                        <div class="gallery-item glass">
+                            <img src="img5.webp" alt="七夕星空">
+                            <p>浪漫星空之下，牛郎织女在鹊桥温柔相遇</p>
+                        </div>
+                        <!-- 在此处手动添加更多图片 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section mystery">
+            <div class="container">
+                <div class="mystery-box glass">
+                    <h2>关于「最后一桶」</h2>
+                    <p>地窖深处，存放着一坛停战年份的陈酿。它封存着一个秘密，等待着在最合适的那个夜晚被开启。</p>
+                    <p class="quote">“把散落在小世界里的传闻酿成酒，讲清一个关于和平的秘密。”</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 最后一桶 开发组 | 概念原型宣传册</p>
+        </div>
+    </footer>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <div class="modal-nav prev">&#10094;</div>
+        <img class="modal-content" id="modalImg">
+        <div class="modal-nav next">&#10095;</div>
+        <div id="caption"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
