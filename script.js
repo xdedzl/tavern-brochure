@@ -18,7 +18,9 @@ function resize() {
 
 function createStars() {
     stars = [];
-    const count = Math.floor((width * height) / 4000);
+    // Reduce density on mobile or smaller screens for performance
+    const density = width < 768 ? 8000 : 4000;
+    const count = Math.floor((width * height) / density);
     for (let i = 0; i < count; i++) {
         stars.push({
             x: Math.random() * width,
@@ -132,6 +134,86 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// Swipe support
+let touchstartX = 0;
+let touchendX = 0;
+
+function handleGesture() {
+    if (touchendX < touchstartX - 50) nextImage();
+    if (touchendX > touchstartX + 50) prevImage();
+}
+
+modal.addEventListener('touchstart', e => {
+    touchstartX = e.changedTouches[0].screenX;
+}, false);
+
+modal.addEventListener('touchend', e => {
+    touchendX = e.changedTouches[0].screenX;
+    handleGesture();
+}, false);
+
+// Feature Cards Toggle
+document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const isActive = card.classList.contains('active');
+        
+        // Close all other cards
+        document.querySelectorAll('.feature-card').forEach(c => c.classList.remove('active'));
+        
+        // If the clicked card wasn't active, open it
+        if (!isActive) {
+            card.classList.add('active');
+            // Scroll to the card so it's centered
+            setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }, 100);
+        }
+    });
+});
+
+// Generic Drag to scroll function
+function enableDragScroll(selector) {
+    const slider = document.querySelector(selector);
+    if (!slider) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+        // Prevent default browser image dragging which causes conflicts
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+        isDown = true;
+        slider.classList.add('grabbing');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.classList.remove('grabbing');
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.classList.remove('grabbing');
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; 
+        slider.scrollLeft = scrollLeft - walk;
+    });
+}
+
+// Enable drag for all sliders
+enableDragScroll('.feature-grid');
+enableDragScroll('.gallery');
+
 // Scroll animations
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -141,6 +223,13 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.section').forEach(section => observer.observe(section));
+document.querySelectorAll('.section').forEach(section => {
+    // Check if section is already in view on load
+    const rect = section.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+        section.classList.add('fade-in');
+    }
+    observer.observe(section);
+});
 
 init();

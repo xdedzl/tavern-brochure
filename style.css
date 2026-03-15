@@ -64,14 +64,15 @@ canvas#starCanvas {
 
 .hero-content {
     max-width: 800px;
+    padding: 0 20px;
     position: relative;
     z-index: 2;
 }
 
 h1 {
-    font-size: 5rem;
+    font-size: clamp(2.5rem, 10vw, 5rem);
     margin-bottom: 1rem;
-    letter-spacing: 0.5rem;
+    letter-spacing: 0.2rem;
     background: linear-gradient(45deg, #fff, var(--primary-color));
     -webkit-background-clip: text;
     background-clip: text;
@@ -80,10 +81,11 @@ h1 {
 }
 
 .subtitle {
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 4vw, 1.5rem);
     font-weight: 300;
     color: var(--text-secondary);
     margin-bottom: 2rem;
+    padding: 0 1rem;
 }
 
 .hero-tags {
@@ -127,7 +129,7 @@ h1 {
 
 /* Sections */
 .section {
-    padding: 8rem 2rem;
+    padding: clamp(4rem, 10vh, 8rem) 1.5rem;
     position: relative;
     z-index: 1;
 }
@@ -146,7 +148,7 @@ h1 {
 }
 
 .section-title {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
     margin-bottom: 3rem;
     text-align: center;
     color: #fff;
@@ -166,31 +168,115 @@ h1 {
 
 /* Feature Cards */
 .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    display: flex;
+    /* 移除 justify-content: center，改用 margin 实现动态对齐 */
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+}
+
+.feature-grid .feature-card:first-child {
+    margin-left: auto;
+}
+.feature-grid .feature-card:last-child {
+    margin-right: auto;
+}
+/* 响应式调整：移动端取消辅助居中的边距 */
+@media (max-width: 768px) {
+    .feature-grid .feature-card:first-child { margin-left: 0; }
+    .feature-grid .feature-card:last-child { margin-right: 0; }
+}
+
+.feature-grid.grabbing {
+    cursor: grabbing;
+    scroll-snap-type: none; /* Disable snapping while dragging for smoothness */
+}
+
+.feature-grid::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
 }
 
 .feature-card {
-    padding: 3rem 2rem;
+    flex: 0 0 280px; /* 稍微缩小宽度以增加宽屏兼容性 */
+    scroll-snap-align: start;
+    padding: 2.5rem 1.5rem;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
 }
 
+
 .feature-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
     border-color: var(--primary-color);
-    box-shadow: 0 10px 40px rgba(255, 215, 0, 0.1);
+}
+
+.feature-card.active {
+    background: rgba(255, 215, 0, 0.08);
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.15);
+    transform: scale(1.02);
 }
 
 .feature-card .icon {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover .icon {
+    transform: scale(1.1);
 }
 
 .feature-card h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     color: var(--primary-color);
+    font-size: 1.4rem;
+}
+
+.feature-card p {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.feature-card.active p {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+/* 展开提示点 */
+.feature-card::after {
+    content: '...';
+    display: block;
+    color: var(--primary-color);
+    font-weight: bold;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.feature-card.active::after {
+    content: '︿';
+    opacity: 1;
 }
 
 /* Showcase */
@@ -235,7 +321,7 @@ h1 {
 }
 
 .mystery-box h2 {
-    font-size: 3rem;
+    font-size: clamp(2rem, 6vw, 3rem);
     margin-bottom: 2rem;
     color: #ffd700;
 }
@@ -249,7 +335,7 @@ h1 {
 .quote {
     font-family: 'Noto Serif SC', serif;
     font-style: italic;
-    font-size: 1.5rem !important;
+    font-size: clamp(1.1rem, 4vw, 1.5rem) !important;
     color: var(--text-secondary);
     border-top: 1px solid var(--glass-border);
     padding-top: 2rem;
@@ -264,18 +350,55 @@ footer {
     border-top: 1px solid var(--glass-border);
 }
 
+/* Showcase Slider */
+.image-showcase {
+    margin-top: 3rem;
+    position: relative;
+    padding: 1rem 0;
+}
+
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    overflow-x: auto;
     gap: 20px;
-    margin-top: 30px;
+    padding: 2rem 1.5rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+}
+
+.gallery .gallery-item:first-child {
+    margin-left: auto;
+}
+.gallery .gallery-item:last-child {
+    margin-right: auto;
+}
+
+@media (max-width: 1200px) {
+    .gallery .gallery-item:first-child { margin-left: 0; }
+    .gallery .gallery-item:last-child { margin-right: 0; }
+}
+
+.gallery::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery.grabbing {
+    cursor: grabbing;
+    scroll-snap-type: none;
 }
 
 .gallery-item {
+    flex: 0 0 400px; /* 优化宽度 */
+    max-width: 85vw;
+    scroll-snap-align: start;
     padding: 15px;
     text-align: center;
     transition: transform 0.3s ease;
 }
+
 
 .gallery-item:hover {
     transform: scale(1.02);
@@ -283,16 +406,29 @@ footer {
 
 .gallery-item img {
     width: 100%;
-    height: 200px;
+    height: 350px;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    /* 彻底禁用图片的默认干扰行为 */
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: auto; /* 保留点击功能 */
 }
 
 .gallery-item p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
+    font-family: 'Noto Serif SC', serif;
+    font-style: italic;
 }
+
+/* 隐藏原本的大图展示，将其整合入列表 */
+.hero-showcase {
+    display: none;
+}
+
 
 /* Modal Styles */
 .modal {
@@ -327,19 +463,27 @@ footer {
 
 .close {
     position: absolute;
-    top: 50px;
-    right: 50px;
+    top: 20px;
+    right: 20px;
     color: #f1f1f1;
-    font-size: 60px;
+    font-size: 40px;
     font-weight: bold;
     transition: 0.3s;
     cursor: pointer;
+    z-index: 1002;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
 }
 
 .close:hover,
 .close:focus {
     color: var(--primary-color);
-    text-decoration: none;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .modal-nav {
@@ -392,8 +536,61 @@ footer {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Tablet and Mobile adjustments */
 @media (max-width: 768px) {
-    h1 { font-size: 3rem; }
-    .section { padding: 4rem 1.5rem; }
-    .mystery-box { padding: 2rem; }
+    .hero {
+        height: 100svh; /* Use svh for mobile to handle address bar */
+    }
+
+    .hero-tags {
+        flex-wrap: wrap;
+        padding: 0 1rem;
+    }
+
+    .feature-grid {
+        margin: 0 -1.5rem; /* 抵消容器 padding，实现全屏滑动感 */
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    .feature-card {
+        flex: 0 0 80%; /* 手机上每张卡片占据 80% 宽度，露出下一张的边缘 */
+    }
+
+    .gallery {
+        /* Removed grid-template-columns as gallery is flex-based */
+    }
+
+    .gallery-item {
+        flex: 0 0 85%;
+    }
+
+    .gallery-item img {
+        height: 250px;
+    }
+
+    .mystery-box {
+        padding: 3rem 1.5rem;
+    }
+
+    .modal-nav {
+        display: none; /* Hide nav arrows on mobile, use swipe instead */
+    }
+
+    .modal-content {
+        max-width: 95%;
+    }
+
+    #caption {
+        font-size: 1rem;
+        width: 90%;
+    }
 }
+
+/* 移除多余样式，保持代码整洁 */
+@media (max-width: 480px) {
+    .section {
+        padding: 3rem 1rem;
+    }
+}
+
